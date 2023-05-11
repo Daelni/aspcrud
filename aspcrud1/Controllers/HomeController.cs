@@ -32,6 +32,23 @@ namespace aspcrud1.Controllers
             return Json(x);
         }
 
+        public JsonResult Guardar(mPersonas newPersona)
+        {
+
+            mPersonas Persona = new mPersonas();
+            var x = Persona.insertPersona(newPersona);
+            return Json(x);
+
+        }
+
+        public JsonResult DetallesPersona(int Id)
+        {
+            mPersonas personas = new mPersonas();
+
+            var x = Persona.obtenerPersonaDetalles(Id);
+            return Json(x);
+        }
+
         public JsonResult CrearClientes(mPersonas newPersona)
         {
 

@@ -2,6 +2,12 @@
     ViewBag.Title = "Home Page";
 }
 
+@*<head>
+    ...
+    <script src="~/assets/js/index.js"></script>
+    ...
+</head>*@
+
 <div class="container">
     <!-- <div class="row"> -->
 
@@ -9,6 +15,7 @@
         <h1>Mi primer CRUD</h1>
         <hr>
     </div>
+
     <div class="row" style="margin-bottom: 20px">
         <button class="btn btn-primary col-xs-4" id="btn_new">NUEVA PERSONA</button>
         <div class="col-xs-4 form-group">
@@ -41,4 +48,112 @@
 
     </div>
     <!-- </div> -->
+    <!-- Modal -->
+    <div class="modal fade bs-example-modal-lg" id="ModalAgregarPersonas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+        <div class="modal-dialog modal-lg" style="max-width: 85%">
+
+            <div class="modal-content">
+                <!-- contenido del modal -->
+
+                <div class="modal-header">
+
+                    <button arial-label="Close" type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <h1 id="lblAddPersonas"></h1>
+                </div>
+
+                <!-- cuerpo del modal-->
+                <div class="modal-body">
+
+                    <div class="row ">
+
+                        <div class="col-md-12 col-lg-12">
+
+                            <div class="row">
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="inputColor">
+                                            Nombre:
+                                        </label>
+                                        <input class="form-control vfper" validar="1" id="inputNombre" placeholder="" type="text" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="inputCapacidad">
+                                            Apellido Paterno:
+                                        </label>
+
+                                        <input class="form-control vfper" validar="1" id="inputApellidoP" placeholder="" type="text" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="inputPlace">
+                                            Apellido Materno
+                                        </label>
+
+                                        <input class="form-control vfper" validar="1" id="inputApellidoM" placeholder="" type="text" />
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="inputMarca">
+                                                Dirección:
+                                            </label>
+                                            <input class="form-control vfper" validar="1" id="inputDireccion" placeholder="" type="text" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="inputMarca">
+                                                Teléfono:
+                                            </label>
+                                            <input class="form-control vfper" validar="1" id="inputTelefono" placeholder="" type="text" />
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button id="btncerrarPersonas" class="btn btn-danger" type="button">
+                            <i class="fa fa-times">
+                            </i>
+                            Cerrar
+                        </button>
+
+                        <button onclick="guardarPersonas()" id="btnGuardarPersonas" class="btn btn-success" type="button">
+                            <i class="fa fa-floppy-o">
+                            </i>
+                            Guardar
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
