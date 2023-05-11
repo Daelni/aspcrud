@@ -94,7 +94,7 @@ namespace aspcrud1.Models
 
         }
 
-        public List
+        //public List
 
         
     }
