@@ -22,8 +22,7 @@ namespace aspcrud1.Models
         List<mPersonas> lsPersonas = new List<mPersonas>();
 
         public List<mPersonas> obtenerPersonas(int Estatus)
-        { //obtiee todas las personas de la bd
-
+        { 
             DataTable dtTemp = new DataTable();
             dtTemp.CaseSensitive = true;
             miSqlClass.conectar();
@@ -56,7 +55,7 @@ namespace aspcrud1.Models
         }
 
         public List<mPersonas> obtenerPersonasBusqueda(string Busqueda)
-        { //obtiene todas las personas de la bd
+        { //obtiene todas las personas de la base de datos
 
             DataTable dtTemp = new DataTable();
             dtTemp.CaseSensitive = true;
@@ -95,7 +94,8 @@ namespace aspcrud1.Models
         }
 
         public List<mPersonas> obtenrPersonaDetalles(int Id)
-        {
+        { //obtiene todas las personas de la base de datos
+
             DataTable dtTemp = new DataTable();
             dtTemp.CaseSensitive = true;
             miSqlClass.conectar();
@@ -117,6 +117,27 @@ namespace aspcrud1.Models
             return miLista;
         }
 
-        
+        public bool EditarPersona(mPersonas newPersona)
+        {
+            miSqlClass.conectar();
+            miSqlClass.SqlConsulta("UPDATE Personas_Daniel SET Nombres = '" + newPersona.Nombre + "', ApellidoP = '" + newPersona.ApellidoP + "', ApellidoM = '" + newPersona.ApellidoM +
+                "', Direccion = '" + newPersona.Direccion + "', Telefono = '" + newPersona.Telefono + "' WHERE Id = '" + newPersona.Id + "'");
+
+            return true;
+        }
+
+        public bool EliminarPersona(int Id)
+        {
+            miSqlClass.conectar();
+            miSqlClass.SqlConsulta(" UPDATE Personas_Daniel SET Estatus = '0' WHERE Id = '" + Id + "'");
+            return true;
+        }
+
+        public bool ReactivarPersona(int Id)
+        {
+            miSqlClass.conectar();
+            miSqlClass.SqlConsulta(" UPDATE Personas_Daniel SET Estatus = '1' WHERE Id = '" + Id + "'");
+            return true;
+        }
     }
 }

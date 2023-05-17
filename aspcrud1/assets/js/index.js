@@ -49,7 +49,7 @@ function loadData(){
 			if(data != ""){
 
 				var TablaPersonas = "";
-
+				console.log(data)
 				for (var i = 0; i < data.length; i++) {
 					//Console.log(data[i]);
 					TablaPersonas += '<tr>';
@@ -60,16 +60,15 @@ function loadData(){
 					TablaPersonas += '<td>' + data[i].Estatus + '</td>';
 					TablaPersonas += '<td>';
 					if (data[i].Estatus == 1) {
-						TablaPersonas += `
-			   			<button class="btn btn-danger" onclick="eliminar(`+ data[i].id + `)" title="Eliminar" type="">
-							<i class="fa fa-trash" aria-hidden="true"></i>
-			   			</button>
-			   			<button class="btn btn-primary" onclick="detalles(`+ data[i].id + `)"  title="Ver Detalles" type="">Ver detalles
-               	    	</button></tr>`;
+						TablaPersonas += '<button class="btn btn-danger" onclick="eliminar('+ data[i].Id + ')" title="Eliminar" type="">'+
+							'<i class="fa fa-trash" aria-hidden="true"></i>'+
+			   			'</button>'+
+			   			'<button class="btn btn-primary" onclick="detalles('+ data[i].Id + ')"  title="Ver Detalles" type="">Ver detalles'+
+               	    	'</button></tr>';
 					}
-					if (data[i].Estatus == 0) {
-						TablaPersonas += `
-						<button class="btn btn-success" onclick="reactivar(`+ data[i].Id + `)" title="Reactivar" type="">
+					if (data[i].estatus == 0) {
+						tablapersonas += `
+						<button class="btn btn-success" onclick="reactivar(`+ data[i].id + `)" title="reactivar" type="">
 							<i class="fa fa-check" aria-hidden"true"></i>
 						</button></tr>`;
 							
@@ -107,11 +106,21 @@ function detalles(id){
 			LoadingOff();
 
 			if (data != "") {
+
 				$("#inputNombre").val(data[0].Nombre);
 				$("#inputApellidoP").val(data[0].ApellidoP);
 				$("#inputApellidoM").val(data[0].ApellidoM);
 				$("#inputDireccion").val(data[0].Direccion);
 				$("#inputTelefono").val(data[0].Telefono);
+
+				state.editar = true;
+				state.auxId = id;
+
+				$('ModalAgregarPersonas').modal('show');
+
+			}
+			else {
+				MsgAlerta("Atencion!", "No hay personas para mostrar", 5000, "warning");
 			}
 		}
 	})
@@ -134,8 +143,12 @@ function guardarPersonas() {
 
 			if (state.editar == true) {
 				info.Id = state.auxId;
+
 				sendPersonaEdit(info);
-			} else {
+
+			}
+
+			else {
 				sendPersona(info);
 			}
 		}
@@ -157,7 +170,7 @@ function sendPersona(info) {
 		beforeSend: function () {
 			LoadingOn("Espere...");
 		},
-		success: function (date) {
+		success: function (data) {
 			if (data) {
 
 				LoadingOff();
@@ -183,15 +196,104 @@ function sendPersona(info) {
 
 function sedPersonaEdit(info) {
 
+	$.ajax({
+		type: 'POST',
+		contentType: "application/x-www-form-urlencoded",
+		url: SITE_URL + '/Home/Editar',
+		data: info,
+		dataType: 'JSON',
+		beforeSend: function () {
+			LoadingOn("Espere...");
+		},
+		success: function (data) {
+			if (data) {
+
+				LoadingOff();
+				LimpiarPersonasForm();
+
+				MsgAlerta("Realizado!", "Registro Guardado", 3000, "success");
+				$('#ModalAgregarPersonas').modal('hide');
+
+				loadData();
+
+			} else {
+				ErrorLog("Error", " Error controlado");
+				LoadingOff();
+			}
+		},
+		error: function (error) {
+			ErrorLog(error.responseText, "Error de comunicación, verifica tu conexión y vuelve a intentarlo.");
+			LoadingOff();
+		}
+	});
 }
 
 function eliminar(id){
 
+	$.ajax({
+		type: 'POST',
+		contentType: "application/x-www-form-urlencoded",
+		url: SITE_URL + '/Home/Eliminar',
+		data: {Id: id},
+		dataType: 'JSON',
+		beforeSend: function () {
+			LoadingOn("Espere...");
+		},
+		success: function (data) {
+
+			if (data) {
+
+				LoadingOff();
+
+				MsgAlerta("Realizado!", "Registro Eliminado", 3000, "success");
+
+				loadData();
+
+			} else {
+				ErrorLog("Error", " Error controlado");
+				LoadingOff();
+			}
+		},
+		error: function (error) {
+			ErrorLog(error.responseText, "Error de comunicación, verifica tu conexión y vuelve a intentarlo.");
+			LoadingOff();
+		}
+	});
 }
 
 function reactivar(id) {
 
+	$.ajax({
+		type: 'POST',
+		contentType: "application/x-www-form-urlencoded",
+		url: SITE_URL + '/Home/Reactivar',
+		data: { Id: id },
+		dataType: 'JSON',
+		beforeSend: function () {
+			LoadingOn("Espere...");
+		},
+		success: function (data) {
+
+			if (data) {
+
+				LoadingOff();
+
+				MsgAlerta("Realizado!", "Registro Activado", 3000, "success");
+
+				loadData();
+
+			} else {
+				ErrorLog("Error", " Error controlado");
+				LoadingOff();
+			}
+		},
+		error: function (error) {
+			ErrorLog(error.responseText, "Error de comunicación, verifica tu conexión y vuelve a intentarlo.");
+			LoadingOff();
+		}
+	});
 }
+
 
 $(document).on('change', '#select_status', function(e){
 	loadData();

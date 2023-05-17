@@ -50,6 +50,27 @@ namespace aspcrud1.Controllers
             return Json(x);
         }
 
+        public JsonResult Editar(mPersonas newPersona)
+        {
+            mPersonas Persona = new mPersonas();
+            var x = Persona.EditarPersona(newPersona);
+            return Json(x);
+        }
+
+        public JsonResult Eliminar(int Id)
+        {
+            mPersonas Persona = new mPersonas();
+            var x = Persona.EliminarPersona(Id);
+            return Json(x);
+        }
+
+        public JsonResult Reactivar(int Id)
+        {
+            mPersonas Persona = new mPersonas();
+            var x = Persona.ReactivarPersona(Id);
+            return Json(x);
+        }
+
         public JsonResult CrearClientes(mPersonas newPersona)
         {
 
