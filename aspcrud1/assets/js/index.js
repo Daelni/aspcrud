@@ -95,7 +95,9 @@ function detalles(id){
 		data: { Id: id },
 		dataType: 'JSON',
 		beforeSend: function () {
+
 			LoadingOn("Espere...");
+
 		},
 		error: function (error) {
 			MsgAlerta("¡Error!", error, 3000, "error");
@@ -123,17 +125,18 @@ function guardarPersonas() {
 
 			let info = {};
 
-			info.Nombre = $('inputNombre').val();
-			info.ApellidoP = $('inputApellidoP').val();
-			info.ApellidoM = $('inputApellidoM').val();
-			info.Direccion = $('inputDireccion').val();
-			info.Telefono = $('inputTelefono').val();
+			info.Nombre = $('#inputNombre').val();
+			info.ApellidoP = $('#inputApellidoP').val();
+			info.ApellidoM = $('#inputApellidoM').val();
+			info.Direccion = $('#inputDireccion').val();
+			info.Telefono = $('#inputTelefono').val();
 			//console.log(info)
 
 			if (state.editar == true) {
 				info.Id = state.auxId;
-
 				sendPersonaEdit(info);
+			} else {
+				sendPersona(info);
 			}
 		}
 		else {
@@ -143,16 +146,16 @@ function guardarPersonas() {
 	});
 }
 
-function sedPersona(info) {
+function sendPersona(info) {
 
 	$.ajax({
 		type: "POST",
 		contentType: "application/x-www-form-urlencoded",
 		url: SITE_URL + "/Home/Guardar",
-		date: info,
+		data: info,
 		dataType: "JSON",
 		beforeSend: function () {
-			loadingOn("Espere...");
+			LoadingOn("Espere...");
 		},
 		success: function (date) {
 			if (data) {
@@ -163,19 +166,30 @@ function sedPersona(info) {
 				MsgAlerta("¡Realizado!", "Registro guardado", 3000, "success");
 				$('#ModalAgregarPersonas').modal('hide');
 
-				loadDate();
+				loadData();
 
+			} else {
+				ErrorLog("Error", "Error controlado");
+				LoadingOff();
 			}
+		},
+		error: function (error) {
+			ErrorLog(error.responseText, "Error de comunicación, verifica tu conexión y vuelve a intentarlo.");
+			LoadingOff();
 		}
 
 	})
+}
+
+function sedPersonaEdit(info) {
+
 }
 
 function eliminar(id){
 
 }
 
-function editar(id) {
+function reactivar(id) {
 
 }
 
@@ -183,8 +197,6 @@ $(document).on('change', '#select_status', function(e){
 	loadData();
 });
 
-
-// validaOnlyNumbers('txt_busqueda');
 
 $(document).on('keyup', '#txt_busqueda', function (e) {
 
@@ -242,7 +254,6 @@ $(document).on('keyup', '#txt_busqueda', function (e) {
 });
 
 
-
 // Función Restablecer Modal Disponibilidad
 function LimpiarPersonasForm() {
 
@@ -257,7 +268,7 @@ function LimpiarPersonasForm() {
 
 }
 
-//Abrir el modal
+//Abrir el modal para agregar Persona
 $(document).on('click', '#btn_new', function (e) {
 
 	e.preventDefault();
@@ -266,4 +277,21 @@ $(document).on('click', '#btn_new', function (e) {
 	$('#ModalAgregarPersonas').modal('show');
 
 });
+
+//Abrir el modal para agregar Persona
+//$(document).on();
+
+
+
+
+//funcion que valida el formulario de agregar Persona
+//function validarFormulario(indentif, callback);
+
+//function quitarInvalidClase(idClassAttr);
+
+//function setError(element);
+
+//function removerError(element);
+
+
 

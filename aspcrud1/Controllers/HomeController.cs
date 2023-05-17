@@ -36,6 +36,7 @@ namespace aspcrud1.Controllers
         {
 
             mPersonas Persona = new mPersonas();
+
             var x = Persona.insertPersona(newPersona);
             return Json(x);
 
@@ -43,9 +44,9 @@ namespace aspcrud1.Controllers
 
         public JsonResult DetallesPersona(int Id)
         {
-            mPersonas personas = new mPersonas();
+            mPersonas Persona = new mPersonas();
 
-            var x = Persona.obtenerPersonaDetalles(Id);
+            var x = Persona.obtenrPersonaDetalles(Id);
             return Json(x);
         }
 

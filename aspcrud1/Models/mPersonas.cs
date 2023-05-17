@@ -56,7 +56,7 @@ namespace aspcrud1.Models
         }
 
         public List<mPersonas> obtenerPersonasBusqueda(string Busqueda)
-        { //obtiee todas las personas de la bd
+        { //obtiene todas las personas de la bd
 
             DataTable dtTemp = new DataTable();
             dtTemp.CaseSensitive = true;
@@ -94,7 +94,28 @@ namespace aspcrud1.Models
 
         }
 
-        //public List
+        public List<mPersonas> obtenrPersonaDetalles(int Id)
+        {
+            DataTable dtTemp = new DataTable();
+            dtTemp.CaseSensitive = true;
+            miSqlClass.conectar();
+
+            var a = miSqlClass.SqlConsulta("SELECT * FROM Personas_Daniel WHERE Id = " + Id, ref dtTemp);
+
+            List<mPersonas> miLista = new List<mPersonas>();
+
+            miLista = (from rw in dtTemp.AsEnumerable()
+                       select new mPersonas
+                       {
+                           Id = Convert.ToInt32(rw["Id"]),
+                           Nombre = Convert.ToString(rw["Nombres"]),
+                           ApellidoP = Convert.ToString(rw["ApellidoP"]),
+                           ApellidoM = Convert.ToString(rw["ApellidoM"]),
+                           Direccion = Convert.ToString(rw["Direccion"]),
+                           Estatus = Convert.ToInt32(rw["Estatus"])
+                       }).ToList();
+            return miLista;
+        }
 
         
     }
