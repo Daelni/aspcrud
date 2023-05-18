@@ -67,9 +67,9 @@ function loadData(){
                	    	'</button></tr>';
 					}
 					if (data[i].estatus == 0) {
-						tablapersonas += `
+						TablaPersonas += `
 						<button class="btn btn-success" onclick="reactivar(`+ data[i].id + `)" title="reactivar" type="">
-							<i class="fa fa-check" aria-hidden"true"></i>
+							<i class="fa fa-check" aria-hidden="true"></i>
 						</button></tr>`;
 							
 					}
@@ -116,7 +116,7 @@ function detalles(id){
 				state.editar = true;
 				state.auxId = id;
 
-				$('ModalAgregarPersonas').modal('show');
+				$('#ModalAgregarPersonas').modal('show');
 
 			}
 			else {
@@ -139,22 +139,21 @@ function guardarPersonas() {
 			info.ApellidoM = $('#inputApellidoM').val();
 			info.Direccion = $('#inputDireccion').val();
 			info.Telefono = $('#inputTelefono').val();
-			//console.log(info)
 
 			if (state.editar == true) {
-				info.Id = state.auxId;
 
+				info.Id = state.auxId;
 				sendPersonaEdit(info);
 
 			}
 
 			else {
-				sendPersona(info);
+				sendPersona(info); 
 			}
 		}
 		else {
-
-			MsAlerta("¡Atención!", "Llenar campos faltantes", 3000, "warning");
+			console.log(json.camposInvalidos)
+			//MsAlerta("¡Atención!", "Llenar campos faltantes", 3000, "warning");
 		}
 	});
 }
@@ -194,7 +193,7 @@ function sendPersona(info) {
 	})
 }
 
-function sedPersonaEdit(info) {
+function sendPersonaEdit(info) {
 
 	$.ajax({
 		type: 'POST',
@@ -387,7 +386,36 @@ $(document).on('click', '#btn_new', function (e) {
 
 
 //funcion que valida el formulario de agregar Persona
-//function validarFormulario(indentif, callback);
+function validarFormulario(formSelector, callback) {
+
+	var campos = [
+		"inputNombre",
+		"inputApellidoP",
+		"inputApellidoM",
+		"inputDireccion",
+		"inputTelefono"
+	];
+
+	var camposInvalidos = [];
+
+	campos.forEach(function (campo) {
+		var valor = $("#" + campo).val().trim();
+		if (valor === "") {
+			camposInvalidos.push(campo);
+			$("#" + campo).addClass("is-invalid");
+		} else {
+			$("#" + campo).removeClass("is-invalid");
+		}
+	});
+
+	if (camposInvalidos.length > 0) {
+		callback({ bool: false, camposInvalidos: camposInvalidos });
+	} else {
+		callback({ bool: true });
+	}
+}
+
+
 
 //function quitarInvalidClase(idClassAttr);
 
