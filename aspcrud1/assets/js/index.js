@@ -16,10 +16,7 @@ function ErrorLog(message, description) {
 }
 
 $(document).ready(function () {
-	$('.btn-primary').click(function () {
-		console.log("me ejecuto")
-		$('#ModalAgregarPersonas').modal('show');
-	});
+	
 });
 
 var error = "Ocurrió un error insesperado en el sitio, por favor intentelo mas tarde o pongase en contacto con su administrador.";
@@ -381,11 +378,13 @@ function LimpiarPersonasForm() {
 
 //Abrir el modal para agregar Persona
 $(document).on('click', '#btn_new', function (e) {
-	console.log('me ejecuto')
 	e.preventDefault();
+
+	console.log('me ejecuto')
 	LimpiarPersonasForm();
 	document.getElementById('lblAddPersonas').innerHTML = "Nuevo Registro";
 	$('#ModalAgregarPersonas').modal('show');
+
 
 });
 
