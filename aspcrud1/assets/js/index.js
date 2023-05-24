@@ -11,42 +11,45 @@ var state = {
 
 };
 
-/*$(document).ready(function () {
+function ErrorLog(message, description) {
+	console.error(message + ": " + description);
+}
+
+$(document).ready(function () {
 	$('.btn-primary').click(function () {
+		console.log("me ejecuto")
 		$('#ModalAgregarPersonas').modal('show');
 	});
-});*/
-
-
+});
 
 var error = "Ocurrió un error insesperado en el sitio, por favor intentelo mas tarde o pongase en contacto con su administrador.";
 var success = "La accion se ralizó con exito";
 var datosIncorrectos = "Datos incorrectos, vuelve a intentarlo.";
 
-function loadData(){
+function loadData() {
 
 	var filtro = $('#select_status').val();
 
 	$.ajax({
-		url: SITE_URL +'/Home/TablaPersonas',
-		type:'POST',
-		data: { Filtro: filtro},
-		dataType:'JSON',
+		url: SITE_URL + '/Home/TablaPersonas',
+		type: 'POST',
+		data: { Filtro: filtro },
+		dataType: 'JSON',
 		beforeSend: function () {
 
 			LoadingOn("Espere...");
 			$("#tbody").empty();
 		},
-		error: function(error){
+		error: function (error) {
 			console.log(error);
 			MsgAlerta("Error!", error, 3000, "error");
 			LoadingOff();
 		},
-		success: function(data){
+		success: function (data) {
 			//console.log(data);
 			LoadingOff();
 
-			if(data != ""){
+			if (data != "") {
 
 				var TablaPersonas = "";
 				console.log(data)
@@ -60,25 +63,25 @@ function loadData(){
 					TablaPersonas += '<td>' + data[i].Estatus + '</td>';
 					TablaPersonas += '<td>';
 					if (data[i].Estatus == 1) {
-						TablaPersonas += '<button class="btn btn-danger" onclick="eliminar('+ data[i].Id + ')" title="Eliminar" type="">'+
-							'<i class="fa fa-trash" aria-hidden="true"></i>'+
-			   			'</button>'+
-			   			'<button class="btn btn-primary" onclick="detalles('+ data[i].Id + ')"  title="Ver Detalles" type="">Ver detalles'+
-               	    	'</button></tr>';
+						TablaPersonas += '<button class="btn btn-danger" onclick="eliminar(' + data[i].Id + ')" title="Eliminar" type="">' +
+							'<i class="fa fa-trash" aria-hidden="true"></i>' +
+							'</button>' +
+							'<button class="btn btn-primary" onclick="detalles(' + data[i].Id + ')"  title="Ver Detalles" type="">Ver detalles' +
+							'</button></tr>';
 					}
 					if (data[i].estatus == 0) {
 						TablaPersonas += `
 						<button class="btn btn-success" onclick="reactivar(`+ data[i].id + `)" title="reactivar" type="">
 							<i class="fa fa-check" aria-hidden="true"></i>
 						</button></tr>`;
-							
+
 					}
 
 				}
 
 				$('#tbody').html(TablaPersonas);
 			}
-			else{
+			else {
 				MsgAlerta("Atencion!", "No hay personas para mostrar", 5000, "warning");
 			}
 		}
@@ -86,7 +89,7 @@ function loadData(){
 
 }
 
-function detalles(id){
+function detalles(id) {
 
 	$.ajax({
 		url: SITE_URL + '/Home/DetallesPersona',
@@ -148,7 +151,7 @@ function guardarPersonas() {
 			}
 
 			else {
-				sendPersona(info); 
+				sendPersona(info);
 			}
 		}
 		else {
@@ -227,13 +230,16 @@ function sendPersonaEdit(info) {
 	});
 }
 
-function eliminar(id){
+
+function eliminar(id) {
+	console.log('me estoy ejecutando')
+	console.log("Valor de id:", id); // Imprime el valor de id en la consola
 
 	$.ajax({
 		type: 'POST',
 		contentType: "application/x-www-form-urlencoded",
 		url: SITE_URL + '/Home/Eliminar',
-		data: {Id: id},
+		data: { Id: id },
 		dataType: 'JSON',
 		beforeSend: function () {
 			LoadingOn("Espere...");
@@ -294,7 +300,7 @@ function reactivar(id) {
 }
 
 
-$(document).on('change', '#select_status', function(e){
+$(document).on('change', '#select_status', function (e) {
 	loadData();
 });
 
@@ -303,22 +309,22 @@ $(document).on('keyup', '#txt_busqueda', function (e) {
 
 	$.ajax({
 		url: SITE_URL + '/Home/TablaPersonasbusqueda',
-		type:'POST',
+		type: 'POST',
 		async: false,
-		data: { Busqueda: $(this).val()},
-		dataType:'JSON',
+		data: { Busqueda: $(this).val() },
+		dataType: 'JSON',
 		beforeSend: function () {
 
 			LoadingOn("Espere...");
 			$("#tbody").empty();
 
 		},
-		error: function(error){
+		error: function (error) {
 			//console.log(error);
 			MsgAlerta("Error!", error, 5000, "error");
 			LoadingOff();
 		},
-		success: function(data){
+		success: function (data) {
 			console.log(data);
 			LoadingOff();
 
@@ -333,14 +339,18 @@ $(document).on('keyup', '#txt_busqueda', function (e) {
 					TablaPersonas += '<td>' + data[i].Nombre + '</td>';
 					TablaPersonas += '<td>' + data[i].Direccion + '</td>';
 					TablaPersonas += '<td>' + data[i].Telefono + '</td>';
-					TablaPersonas += '<td>' + data[i].Estatus + '</td>';
+					TablaPersonas += '<td class="d-flex justify-content-center">' + data[i].Estatus + '</td>';
 					TablaPersonas += '<td>';
 					if (data[i].Estatus == 1) {
 						TablaPersonas += `
-			   			<button class="btn btn-danger" onclick="eliminar(`+ data[i].id + `)" title="Eliminar" type="">Eliminar
+			   			<button class="btn btn-danger" onclick="eliminar(`+ data[i].Id + `)" title="Eliminar" type="">Eliminar
 			   			</button>
-			   			<button class="btn btn-primary" onclick="detalles(`+ data[i].id + `)"  title="Ver Detalles" type="">Ver detalles
-               	    	</button></tr>`;
+			   			<button class="btn btn-primary" onclick="detalles(`+ data[i].Id + `)"  title="Ver Detalles" type="">Ver detalles
+               	    	</button></tr>s`;
+					} else if (data[i].Estatus === 0) {
+						TablaPersonas += `
+			   			<button class="btn btn-secondary" onclick="reactivar(`+ data[i].Id + `)" title="Reactivar usuario" type="">Reactivar usuario
+			   			</button> `
 					}
 
 				}
@@ -371,7 +381,7 @@ function LimpiarPersonasForm() {
 
 //Abrir el modal para agregar Persona
 $(document).on('click', '#btn_new', function (e) {
-
+	console.log('me ejecuto')
 	e.preventDefault();
 	LimpiarPersonasForm();
 	document.getElementById('lblAddPersonas').innerHTML = "Nuevo Registro";

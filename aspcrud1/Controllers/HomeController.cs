@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using aspcrud1.Models;
 using System.Web.Mvc;
-using System.Data;
-using Newtonsoft.Json;
-using aspcrud1.Models;
 
 namespace aspcrud1.Controllers
 {
