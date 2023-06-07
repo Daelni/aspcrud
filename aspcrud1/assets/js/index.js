@@ -365,28 +365,32 @@ $(document).on('keyup', '#txt_busqueda', function (e) {
 // Función Restablecer Modal Disponibilidad
 function LimpiarPersonasForm() {
 
-	document.getElementById('lblAddPersonas').innerHTML = "";
+	//document.getElementById('lblAddPersonas').innerHTML = "";
 
-	$(".vfper").val("");
+	//$(".vfper").val("");
 
-	state.auxId = 0;
-	state.editar = false;
+	//state.auxId = 0;
+	//state.editar = false;
 
-	$(".is-invalid").removeClass('is-invalid');
+	//$(".is-invalid").removeClass('is-invalid');
 
 }
-
-//Abrir el modal para agregar Persona
 $(document).on('click', '#btn_new', function (e) {
 	e.preventDefault();
-
-	console.log('me ejecuto')
-	LimpiarPersonasForm();
-	document.getElementById('lblAddPersonas').innerHTML = "Nuevo Registro";
+	console.log('me ejecuto');
 	$('#ModalAgregarPersonas').modal('show');
-
-
 });
+//Abrir el modal para agregar Persona
+//$(document).on('click', '#btn_new', function (e) {
+//	e.preventDefault();
+
+//	console.log('me ejecuto')
+//	//LimpiarPersonasForm();
+//	//document.getElementById('lblAddPersonas').innerHTML = "Nuevo Registro";
+//	$('#ModalAgregarPersonas').modal('show');
+
+
+//});
 
 //Abrir el modal para agregar Persona
 //$(document).on();
