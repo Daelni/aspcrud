@@ -44,6 +44,12 @@
 
     </div>
 
+    @*Marcar en Rojo las casillas invalidas del modal*@
+    <style>
+        .is-invalid {
+            border: 1px solid red;
+        }
+    </style>
 
     <!-- Modal -->
     <div class="modal fade bs-example-modal-lg" id="ModalAgregarPersonas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
@@ -105,13 +111,12 @@
 
                                 <div class="row">
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-4" style="margin-left: 14px;">
                                         <div class="form-group">
                                             <label for="inputMarca">
                                                 Dirección:
                                             </label>
                                             <input class="form-control vfper" validar="1" id="inputDireccion" placeholder="" type="text" />
-
                                         </div>
                                     </div>
 
@@ -137,7 +142,7 @@
                         <button id="btncerrarPersonas" class="btn btn-danger" type="button">
                             <i class="fa fa-times">
                             </i>
-                            Cerrar
+                            Eliminar
                         </button>
 
                         <button onclick="guardarPersonas()" id="btnGuardarPersonas" class="btn btn-success" type="button">

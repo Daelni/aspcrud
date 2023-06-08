@@ -153,7 +153,7 @@ function guardarPersonas() {
 		}
 		else {
 			console.log(json.camposInvalidos)
-			//MsAlerta("¡Atención!", "Llenar campos faltantes", 3000, "warning");
+			MsgAlerta("¡Atención!", "Llenar campos faltantes", 3000, "warning");
 		}
 	});
 }
@@ -173,7 +173,7 @@ function sendPersona(info) {
 			if (data) {
 
 				LoadingOff();
-				LimpiarPersonaForm();
+				LimpiarPersonasForm();
 
 				MsgAlerta("¡Realizado!", "Registro guardado", 3000, "success");
 				$('#ModalAgregarPersonas').modal('hide');
@@ -362,40 +362,41 @@ $(document).on('keyup', '#txt_busqueda', function (e) {
 });
 
 
-// Función Restablecer Modal Disponibilidad
+ //Función Restablecer Modal
+
 function LimpiarPersonasForm() {
 
-	//document.getElementById('lblAddPersonas').innerHTML = "";
+	document.getElementById('lblAddPersonas').innerHTML = "";
 
-	//$(".vfper").val("");
+	$(".vfper").val("");
 
-	//state.auxId = 0;
-	//state.editar = false;
+	state.auxId = 0;
+	state.editar = false;
 
-	//$(".is-invalid").removeClass('is-invalid');
+	$(".is-invalid").removeClass('is-invalid');
 
 }
-$(document).on('click', '#btn_new', function (e) {
-	e.preventDefault();
-	console.log('me ejecuto');
-	$('#ModalAgregarPersonas').modal('show');
-});
-//Abrir el modal para agregar Persona
+
+
+
 //$(document).on('click', '#btn_new', function (e) {
 //	e.preventDefault();
-
-//	console.log('me ejecuto')
-//	//LimpiarPersonasForm();
-//	//document.getElementById('lblAddPersonas').innerHTML = "Nuevo Registro";
+//	console.log('me ejecuto');
 //	$('#ModalAgregarPersonas').modal('show');
-
-
 //});
 
+
 //Abrir el modal para agregar Persona
-//$(document).on();
+$(document).on('click', '#btn_new', function (e) {
+	e.preventDefault();
+
+	console.log('me ejecuto')
+	LimpiarPersonasForm();
+	document.getElementById('lblAddPersonas').innerHTML = "Nuevo Registro";
+	$('#ModalAgregarPersonas').modal('show');
 
 
+});
 
 
 //funcion que valida el formulario de agregar Persona
@@ -429,8 +430,6 @@ function validarFormulario(formSelector, callback) {
 }
 
 
-
-//function quitarInvalidClase(idClassAttr);
 
 //function setError(element);
 

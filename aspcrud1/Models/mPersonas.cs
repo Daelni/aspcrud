@@ -17,7 +17,7 @@ namespace aspcrud1.Models
         public string ApellidoM { get; set; }
         public string Direccion { get; set; }
         public string Telefono { get; set; }
-        public int Estatus{ get; set; }
+        public string Estatus { get; set; }
 
         List<mPersonas> lsPersonas = new List<mPersonas>();
 
