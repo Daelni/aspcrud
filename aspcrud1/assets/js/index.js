@@ -228,7 +228,6 @@ function sendPersonaEdit(info) {
 	});
 }
 
-
 function eliminar(id) {
 	console.log('me estoy ejecutando')
 	console.log("Valor de id:", id); // Imprime el valor de id en la consola
@@ -363,8 +362,7 @@ $(document).on('keyup', '#txt_busqueda', function (e) {
 });
 
 
- //Función Restablecer Modal
-
+//Función Restablecer Modal
 function LimpiarPersonasForm() {
 
 	document.getElementById('lblAddPersonas').innerHTML = "";
@@ -378,15 +376,6 @@ function LimpiarPersonasForm() {
 
 }
 
-
-
-//$(document).on('click', '#btn_new', function (e) {
-//	e.preventDefault();
-//	console.log('me ejecuto');
-//	$('#ModalAgregarPersonas').modal('show');
-//});
-
-
 //Abrir el modal para agregar Persona
 $(document).on('click', '#btn_new', function (e) {
 	e.preventDefault();
@@ -399,6 +388,11 @@ $(document).on('click', '#btn_new', function (e) {
 
 });
 
+//Botón cerrar modal
+function cerrarModal() {
+	LimpiarPersonasForm();
+	$('#ModalAgregarPersonas').modal('hide');
+}
 
 //funcion que valida el formulario de agregar Persona
 function validarFormulario(formSelector, callback) {
