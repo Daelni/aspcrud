@@ -17,7 +17,7 @@ namespace aspcrud1.Models
         public string ApellidoM { get; set; }
         public string Direccion { get; set; }
         public string Telefono { get; set; }
-        public string Estatus { get; set; }
+        public int Estatus { get; set; }
 
         List<mPersonas> lsPersonas = new List<mPersonas>();
 
@@ -86,8 +86,8 @@ namespace aspcrud1.Models
 
             miSqlClass.conectar();
 
-            miSqlClass.SqlConsulta(" INSERT INTO Personas_Daniel (Nombres, ApellidoP, ApellidoM, Direccion, Telefono) VALUES ('" + newPersona.Nombre + "','" + newPersona.ApellidoP+
-                "','" + newPersona.ApellidoM + "','" + newPersona.Direccion + "','" + newPersona.Telefono + "')");
+            miSqlClass.SqlConsulta(" INSERT INTO Personas_Daniel (Nombres, ApellidoP, ApellidoM, Direccion, Telefono, Estatus) VALUES ('" + newPersona.Nombre + "','" + newPersona.ApellidoP+
+                "','" + newPersona.ApellidoM + "','" + newPersona.Direccion + "','" + newPersona.Telefono + "', 1)");
 
             return true;
 

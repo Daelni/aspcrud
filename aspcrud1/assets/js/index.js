@@ -126,6 +126,7 @@ function detalles(id) {
 	})
 }
 
+//Funcion para guardar personas en un archivo json
 function guardarPersonas() {
 
 	validarFormulario('.vfper', function (json) {
