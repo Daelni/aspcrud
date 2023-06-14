@@ -86,47 +86,83 @@ function loadData() {
 
 }
 
-function detalles(id) {
+//function detalles(id) {
 
+//	$.ajax({
+//		url: SITE_URL + '/Home/DetallesPersona',
+//		type: 'POST',
+//		data: { Id: id },
+//		dataType: 'JSON',
+//		beforeSend: function () {
+
+//			LoadingOn("Espere...");
+
+//		},
+//		error: function (error) {
+//			MsgAlerta("¡Error!", error, 3000, "error");
+//			LoadingOff();
+//		},
+//		success: function (data) {
+//			LoadingOff();
+
+//			if (data != "") {
+
+//				$("#inputNombre").val(data[0].Nombre);
+//				$("#inputApellidoP").val(data[0].ApellidoP);
+//				$("#inputApellidoM").val(data[0].ApellidoM);
+//				$("#inputDireccion").val(data[0].Direccion);
+//				$("#inputTelefono").val(data[0].Telefono);
+
+//				state.editar = true;
+//				state.auxId = id;
+
+//				$('#ModalAgregarPersonas').modal('show');
+
+//			}
+//			else {
+//				MsgAlerta("Atencion!", "No hay personas para mostrar", 5000, "warning");
+//			}
+//		}
+//	})
+//}
+
+//Funcion para guardar personas en un archivo json
+
+function detalles(id) {
 	$.ajax({
 		url: SITE_URL + '/Home/DetallesPersona',
 		type: 'POST',
 		data: { Id: id },
 		dataType: 'JSON',
 		beforeSend: function () {
-
-			LoadingOn("Espere...");
-
+			LoadingOn("Obteniendo detalles...");
 		},
 		error: function (error) {
-			MsgAlerta("¡Error!", error, 3000, "error");
+			MsgAlerta("Error!", error, 5000, "error");
 			LoadingOff();
 		},
 		success: function (data) {
 			LoadingOff();
 
 			if (data != "") {
-
 				$("#inputNombre").val(data[0].Nombre);
 				$("#inputApellidoP").val(data[0].ApellidoP);
 				$("#inputApellidoM").val(data[0].ApellidoM);
 				$("#inputDireccion").val(data[0].Direccion);
 				$("#inputTelefono").val(data[0].Telefono);
 
-				state.editar = true;
-				state.auxId = id;
-
+				$('#lblAddPersonas').text('Editar Persona');
+				$('#btncerrarPersonas').text('Cancelar');
+				$('#btnGuardarPersonas').text('Guardar Cambios');
 				$('#ModalAgregarPersonas').modal('show');
-
-			}
-			else {
+			} else {
 				MsgAlerta("Atencion!", "No hay personas para mostrar", 5000, "warning");
 			}
 		}
-	})
+	});
 }
 
-//Funcion para guardar personas en un archivo json
+
 function guardarPersonas() {
 
 	validarFormulario('.vfper', function (json) {
@@ -342,7 +378,7 @@ $(document).on('keyup', '#txt_busqueda', function (e) {
 						TablaPersonas += `
 			   			<button class="btn btn-danger" onclick="eliminar(`+ data[i].Id + `)" title="Eliminar" type="">Eliminar
 			   			</button>
-			   			<button class="btn btn-primary" onclick="detalles(`+ data[i].Id + `)"  title="Ver Detalles" type="">Ver detalles
+			   			<button class="btn btn-primary" onclick="detalles(`+ data[i].Id + `)"  title="Ver detalles" type="">Ver detalles
                	    	</button></tr>s`;
 					} else if (data[i].Estatus === 0) {
 						TablaPersonas += `
