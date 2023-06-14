@@ -64,15 +64,14 @@ function loadData() {
 							'<i class="fa fa-trash" aria-hidden="true"></i>' +
 							'</button>' +
 							'<button class="btn btn-primary" onclick="detalles(' + data[i].Id + ')"  title="Ver Detalles" type="">Ver detalles' +
-							'</button></tr>';
+							'</button></td></tr>';
 					}
 					if (data[i].estatus == 0) {
-						TablaPersonas += `
-						<button class="btn btn-success" onclick="reactivar(`+ data[i].id + `)" title="reactivar" type="">
-							<i class="fa fa-check" aria-hidden="true"></i>
-						</button></tr>`;
-
+						TablaPersonas += '<button class="btn btn-success" onclick="reactivar(' + data[i].id + ')" title="Reactivar" type="">' +
+							'<i class="fa fa-check" aria-hidden="true"></i>' +
+							'</button></td></tr>';
 					}
+
 
 				}
 
@@ -86,47 +85,14 @@ function loadData() {
 
 }
 
-//function detalles(id) {
-
-//	$.ajax({
-//		url: SITE_URL + '/Home/DetallesPersona',
-//		type: 'POST',
-//		data: { Id: id },
-//		dataType: 'JSON',
-//		beforeSend: function () {
-
-//			LoadingOn("Espere...");
-
-//		},
-//		error: function (error) {
-//			MsgAlerta("¡Error!", error, 3000, "error");
-//			LoadingOff();
-//		},
-//		success: function (data) {
-//			LoadingOff();
-
-//			if (data != "") {
-
-//				$("#inputNombre").val(data[0].Nombre);
-//				$("#inputApellidoP").val(data[0].ApellidoP);
-//				$("#inputApellidoM").val(data[0].ApellidoM);
-//				$("#inputDireccion").val(data[0].Direccion);
-//				$("#inputTelefono").val(data[0].Telefono);
-
-//				state.editar = true;
-//				state.auxId = id;
-
-//				$('#ModalAgregarPersonas').modal('show');
-
-//			}
-//			else {
-//				MsgAlerta("Atencion!", "No hay personas para mostrar", 5000, "warning");
-//			}
-//		}
-//	})
-//}
-
-//Funcion para guardar personas en un archivo json
+//// Evento para el botón "Guardar cambios" / "Agregar persona"
+//$('#btnGuardarPersonas').on('click', function () {
+//	if (state.editar) {
+//		guardarCambios(); // Ejecutar la función de actualización
+//	} else {
+//		guardarPersonas(); // Ejecutar la función de inserción
+//	}
+//});
 
 function detalles(id) {
 	$.ajax({
@@ -143,6 +109,7 @@ function detalles(id) {
 		},
 		success: function (data) {
 			LoadingOff();
+			console.log(data)
 
 			if (data != "") {
 				$("#inputNombre").val(data[0].Nombre);
@@ -164,13 +131,9 @@ function detalles(id) {
 
 
 function guardarPersonas() {
-
 	validarFormulario('.vfper', function (json) {
-
 		if (json.bool) {
-
 			let info = {};
-
 			info.Nombre = $('#inputNombre').val();
 			info.ApellidoP = $('#inputApellidoP').val();
 			info.ApellidoM = $('#inputApellidoM').val();
@@ -178,22 +141,24 @@ function guardarPersonas() {
 			info.Telefono = $('#inputTelefono').val();
 
 			if (state.editar == true) {
-
 				info.Id = state.auxId;
 				sendPersonaEdit(info);
-
-			}
-
-			else {
+			} else {
 				sendPersona(info);
 			}
-		}
-		else {
-			console.log(json.camposInvalidos)
+		} else {
+			console.log(json.camposInvalidos);
 			MsgAlerta("¡Atención!", "Llenar campos faltantes", 3000, "warning");
 		}
 	});
 }
+
+$(document).ready(function () {
+	$(document).on('click', '#btnGuardarPersonas', function () {
+		guardarPersonas();
+	});
+});
+
 
 function sendPersona(info) {
 
@@ -230,30 +195,52 @@ function sendPersona(info) {
 	})
 }
 
-function sendPersonaEdit(info) {
+$(document).ready(function () {
+	// Evento de clic del botón #btnOk
+	$('#btnOk').click(function () {
+		// Obtener los valores de los campos de entrada
+		var id = $("#inputId").val();
+		var nombre = $("#inputNombre").val();
+		var apellidoP = $("#inputApellidoP").val();
+		var apellidoM = $("#inputApellidoM").val();
+		var direccion = $("#inputDireccion").val();
+		var telefono = $("#inputTelefono").val();
 
+		// Crear un objeto con los datos a enviar al servidor
+		var persona = {
+			Id: id,
+			Nombre: nombre,
+			ApellidoP: apellidoP,
+			ApellidoM: apellidoM,
+			Direccion: direccion,
+			Telefono: telefono
+		};
+
+		console.log("me abri btnOk")
+		// Llamar a la función sendPersonaEdit para guardar los cambios
+		sendPersonaEdit(persona);
+	});
+});
+
+function sendPersonaEdit(persona) {
 	$.ajax({
 		type: 'POST',
 		contentType: "application/x-www-form-urlencoded",
 		url: SITE_URL + '/Home/Editar',
-		data: info,
+		data: persona,
 		dataType: 'JSON',
 		beforeSend: function () {
 			LoadingOn("Espere...");
 		},
 		success: function (data) {
 			if (data) {
-
 				LoadingOff();
 				LimpiarPersonasForm();
-
 				MsgAlerta("Realizado!", "Registro Guardado", 3000, "success");
 				$('#ModalAgregarPersonas').modal('hide');
-
 				loadData();
-
 			} else {
-				ErrorLog("Error", " Error controlado");
+				ErrorLog("Error", "Error controlado");
 				LoadingOff();
 			}
 		},
@@ -262,7 +249,9 @@ function sendPersonaEdit(info) {
 			LoadingOff();
 		}
 	});
+		console.log(persona)
 }
+
 
 function eliminar(id) {
 	console.log('me estoy ejecutando')
@@ -459,12 +448,3 @@ function validarFormulario(formSelector, callback) {
 		callback({ bool: true });
 	}
 }
-
-
-
-//function setError(element);
-
-//function removerError(element);
-
-
-

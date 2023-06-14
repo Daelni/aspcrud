@@ -94,13 +94,12 @@ namespace aspcrud1.Models
         }
 
         public List<mPersonas> obtenrPersonaDetalles(int Id)
-        { //obtiene todas las personas de la base de datos
-
+        {
             DataTable dtTemp = new DataTable();
             dtTemp.CaseSensitive = true;
             miSqlClass.conectar();
 
-            var a = miSqlClass.SqlConsulta("SELECT * FROM Personas_Daniel WHERE Id = " + Id, ref dtTemp);
+            var a = miSqlClass.SqlConsulta("SELECT Id, Nombres, ApellidoP, ApellidoM, Direccion, Telefono, Estatus FROM Personas_Daniel WHERE Id = " + Id, ref dtTemp);
 
             List<mPersonas> miLista = new List<mPersonas>();
 
@@ -112,19 +111,22 @@ namespace aspcrud1.Models
                            ApellidoP = Convert.ToString(rw["ApellidoP"]),
                            ApellidoM = Convert.ToString(rw["ApellidoM"]),
                            Direccion = Convert.ToString(rw["Direccion"]),
+                           Telefono = Convert.ToString(rw["Telefono"]),
                            Estatus = Convert.ToInt32(rw["Estatus"])
                        }).ToList();
             return miLista;
         }
 
+
         public bool EditarPersona(mPersonas newPersona)
         {
             miSqlClass.conectar();
-            miSqlClass.SqlConsulta("UPDATE Personas_Daniel SET Nombres = '" + newPersona.Nombre + "', ApellidoP = '" + newPersona.ApellidoP + "', ApellidoM = '" + newPersona.ApellidoM +
-                "', Direccion = '" + newPersona.Direccion + "', Telefono = '" + newPersona.Telefono + "' WHERE Id = '" + newPersona.Id + "'");
+            var a = miSqlClass.SqlConsulta("UPDATE Personas_Daniel SET Nombres = '" + newPersona.Nombre + "', ApellidoP = '" + newPersona.ApellidoP + "', ApellidoM = '" + newPersona.ApellidoM +
+                "', Direccion = '" + newPersona.Direccion + "', Telefono = '" + newPersona.Telefono + "' WHERE Id = " + newPersona.Id);
 
             return true;
         }
+
 
         public bool EliminarPersona(int Id)
         {

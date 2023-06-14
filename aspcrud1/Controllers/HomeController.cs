@@ -26,6 +26,7 @@ namespace aspcrud1.Controllers
         }
 
         public JsonResult TablaPersonasbusqueda(string Busqueda)
+        
         {
             mPersonas Persona = new mPersonas();
 
