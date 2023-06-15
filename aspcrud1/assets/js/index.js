@@ -1,8 +1,11 @@
+var idPersona;
+
 $(function () {
 
 	loadData();
 
 });
+
 
 var state = {
 
@@ -22,6 +25,13 @@ $(document).ready(function () {
 var error = "Ocurrió un error insesperado en el sitio, por favor intentelo mas tarde o pongase en contacto con su administrador.";
 var success = "La accion se ralizó con exito";
 var datosIncorrectos = "Datos incorrectos, vuelve a intentarlo.";
+
+// Función para guardar el ID de la persona en la variable global idPersona
+function guardarIdPersona(id) {
+	console.log("Guardando ID de persona: " + id);
+	idPersona = id;
+	console.log("idPersona actualizada: " + idPersona);
+}
 
 function loadData() {
 
@@ -43,7 +53,7 @@ function loadData() {
 			LoadingOff();
 		},
 		success: function (data) {
-			//console.log(data);
+			console.log(data);
 			LoadingOff();
 
 			if (data != "") {
@@ -82,8 +92,8 @@ function loadData() {
 			}
 		}
 	});
-
 }
+
 
 //// Evento para el botón "Guardar cambios" / "Agregar persona"
 //$('#btnGuardarPersonas').on('click', function () {
@@ -95,6 +105,8 @@ function loadData() {
 //});
 
 function detalles(id) {
+	guardarIdPersona(id);
+
 	$.ajax({
 		url: SITE_URL + '/Home/DetallesPersona',
 		type: 'POST',
