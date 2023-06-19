@@ -22,37 +22,36 @@ namespace aspcrud1.Models
         List<mPersonas> lsPersonas = new List<mPersonas>();
 
         public List<mPersonas> obtenerPersonas(int Estatus)
-        { 
+        {
             DataTable dtTemp = new DataTable();
             dtTemp.CaseSensitive = true;
             miSqlClass.conectar();
 
-            if(Estatus == 2)
-            {
+            string consulta = "SELECT Id, CONCAT(Nombres, ' ', ApellidoP, ' ', ApellidoM) Nombre, Telefono, Direccion, Estatus " +
+                              "FROM Personas_Daniel";
 
-                var a = miSqlClass.SqlConsulta("SELECT Id, CONCAT(Nombres, ' ',ApellidoP,' ',ApellidoM) Nombre, Telefono, Direccion, Estatus" +
-                            "FROM Personas_Daniel", ref dtTemp);
-            }
-            else
+            if (Estatus != 2)
             {
-
-                var a = miSqlClass.SqlConsulta("SELECT Id, CONCAT(Nombres, ' ',ApellidoP,' ',ApellidoM) Nombre, Telefono, Direccion, Estatus" +
-                            "FROM Personas_Daniel WHERE Estauts ='" + Estatus +"'", ref dtTemp);
+                consulta += " WHERE Estatus = '" + Estatus + "'";
             }
 
-            List<mPersonas> miLista = new List<mPersonas>();
+            consulta += " ORDER BY Id ASC";
 
-            miLista = (from rw in dtTemp.AsEnumerable()
-                       select new mPersonas
-                       {
-                           Id = Convert.ToInt32(rw["Id"]),
-                           Nombre = Convert.ToString(rw["Nombre"]),
-                           Telefono = Convert.ToString(rw["Telefono"]),
-                           Direccion = Convert.ToString(rw["Direccion"]),
-                           Estatus = Convert.ToInt32(rw["Estatus"])
-                       }).ToList();
+            var a = miSqlClass.SqlConsulta(consulta, ref dtTemp);
+
+            List<mPersonas> miLista = (from rw in dtTemp.AsEnumerable()
+                                       select new mPersonas
+                                       {
+                                           Id = Convert.ToInt32(rw["Id"]),
+                                           Nombre = Convert.ToString(rw["Nombre"]),
+                                           Telefono = Convert.ToString(rw["Telefono"]),
+                                           Direccion = Convert.ToString(rw["Direccion"]),
+                                           Estatus = Convert.ToInt32(rw["Estatus"])
+                                       }).OrderBy(persona => persona.Id).ToList();
+
             return miLista;
         }
+
 
         public List<mPersonas> obtenerPersonasBusqueda(string Busqueda)
         { //obtiene todas las personas de la base de datos
