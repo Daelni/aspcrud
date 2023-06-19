@@ -1,4 +1,47 @@
+
+
 var idPersona;
+
+var editt = false;
+
+
+//// Evento para el botón "Guardar cambios" / "Agregar persona"
+$('#btnGuardar').on('click', function () {
+	if (editt === false) {
+		console.log("gualdar");
+		guardarPersonas(); // Ejecutar la función de inserción
+	} else {
+		console.log("edit go");
+		// Obtener los valores de los campos de entrada
+		var id = idPersona;
+		var nombre = $("#inputNombre").val();
+		var apellidoP = $("#inputApellidoP").val();
+		var apellidoM = $("#inputApellidoM").val();
+		var direccion = $("#inputDireccion").val();
+		var telefono = $("#inputTelefono").val();
+
+		// Crear un objeto con los datos a enviar al servidor
+		var persona = {
+			Id: id,
+			Nombre: nombre,
+			ApellidoP: apellidoP,
+			ApellidoM: apellidoM,
+			Direccion: direccion,
+			Telefono: telefono
+		};
+
+		console.log(persona);
+		// Llamar a la función sendPersonaEdit para guardar los cambios
+		sendPersonaEdit(persona);
+	}
+});
+
+//$(document).ready(function () {
+//	$(document).on('click', '#btnGuardar', function () {
+//		guardarPersonas();
+//	});
+//});
+
 
 $(function () {
 
@@ -76,7 +119,7 @@ function loadData() {
 							'<button class="btn btn-primary" onclick="detalles(' + data[i].Id + ')"  title="Ver Detalles" type="">Ver detalles' +
 							'</button></td></tr>';
 					}
-					if (data[i].estatus == 0) {
+					if (data[i].Estatus == 0) {
 						TablaPersonas += '<button class="btn btn-success" onclick="reactivar(' + data[i].id + ')" title="Reactivar" type="">' +
 							'<i class="fa fa-check" aria-hidden="true"></i>' +
 							'</button></td></tr>';
@@ -94,17 +137,8 @@ function loadData() {
 	});
 }
 
-
-//// Evento para el botón "Guardar cambios" / "Agregar persona"
-//$('#btnGuardarPersonas').on('click', function () {
-//	if (state.editar) {
-//		guardarCambios(); // Ejecutar la función de actualización
-//	} else {
-//		guardarPersonas(); // Ejecutar la función de inserción
-//	}
-//});
-
 function detalles(id) {
+	editt = true;
 	guardarIdPersona(id);
 
 	$.ajax({
@@ -121,7 +155,7 @@ function detalles(id) {
 		},
 		success: function (data) {
 			LoadingOff();
-			console.log(data)
+			console.log(data);
 
 			if (data != "") {
 				$("#inputNombre").val(data[0].Nombre);
@@ -132,7 +166,8 @@ function detalles(id) {
 
 				$('#lblAddPersonas').text('Editar Persona');
 				$('#btncerrarPersonas').text('Cancelar');
-				$('#btnGuardarPersonas').text('Guardar Cambios');
+				$('#btnGuardar').text('Guardar Cambios');
+
 				$('#ModalAgregarPersonas').modal('show');
 			} else {
 				MsgAlerta("Atencion!", "No hay personas para mostrar", 5000, "warning");
@@ -140,6 +175,7 @@ function detalles(id) {
 		}
 	});
 }
+
 
 
 function guardarPersonas() {
@@ -152,24 +188,15 @@ function guardarPersonas() {
 			info.Direccion = $('#inputDireccion').val();
 			info.Telefono = $('#inputTelefono').val();
 
-			if (state.editar == true) {
-				info.Id = state.auxId;
-				sendPersonaEdit(info);
-			} else {
-				sendPersona(info);
-			}
+			sendPersona(info);
 		} else {
 			console.log(json.camposInvalidos);
 			MsgAlerta("¡Atención!", "Llenar campos faltantes", 3000, "warning");
 		}
 	});
+			console.log("si llego: ");
 }
 
-$(document).ready(function () {
-	$(document).on('click', '#btnGuardarPersonas', function () {
-		guardarPersonas();
-	});
-});
 
 
 function sendPersona(info) {
@@ -207,32 +234,32 @@ function sendPersona(info) {
 	})
 }
 
-$(document).ready(function () {
-	// Evento de clic del botón #btnOk
-	$('#btnOk').click(function () {
-		// Obtener los valores de los campos de entrada
-		var id = $("#inputId").val();
-		var nombre = $("#inputNombre").val();
-		var apellidoP = $("#inputApellidoP").val();
-		var apellidoM = $("#inputApellidoM").val();
-		var direccion = $("#inputDireccion").val();
-		var telefono = $("#inputTelefono").val();
+//$(document).ready(function () {
+//	// Evento de clic del botón #btnOk
+//	$('#btnOk').click(function () {
+//		// Obtener los valores de los campos de entrada
+//		var id = idPersona;
+//		var nombre = $("#inputNombre").val();
+//		var apellidoP = $("#inputApellidoP").val();
+//		var apellidoM = $("#inputApellidoM").val();
+//		var direccion = $("#inputDireccion").val();
+//		var telefono = $("#inputTelefono").val();
 
-		// Crear un objeto con los datos a enviar al servidor
-		var persona = {
-			Id: id,
-			Nombre: nombre,
-			ApellidoP: apellidoP,
-			ApellidoM: apellidoM,
-			Direccion: direccion,
-			Telefono: telefono
-		};
+//		// Crear un objeto con los datos a enviar al servidor
+//		var persona = {
+//			Id: id,
+//			Nombre: nombre,
+//			ApellidoP: apellidoP,
+//			ApellidoM: apellidoM,
+//			Direccion: direccion,
+//			Telefono: telefono
+//		};
 
-		console.log("me abri btnOk")
-		// Llamar a la función sendPersonaEdit para guardar los cambios
-		sendPersonaEdit(persona);
-	});
-});
+//		console.log(persona)
+//		// Llamar a la función sendPersonaEdit para guardar los cambios
+//		sendPersonaEdit(persona);
+//	});
+//});
 
 function sendPersonaEdit(persona) {
 	$.ajax({
@@ -261,7 +288,6 @@ function sendPersonaEdit(persona) {
 			LoadingOff();
 		}
 	});
-		console.log(persona)
 }
 
 
@@ -415,13 +441,15 @@ function LimpiarPersonasForm() {
 
 //Abrir el modal para agregar Persona
 $(document).on('click', '#btn_new', function (e) {
+	editt = false;
+	console.log('este es el valor de editt: ' + editt);
 	e.preventDefault();
 
 	console.log('me ejecuto')
 	LimpiarPersonasForm();
 	document.getElementById('lblAddPersonas').innerHTML = "Nuevo Registro";
 	$('#ModalAgregarPersonas').modal('show');
-
+	$('#btnGuardar').text('Guardar');
 
 });
 
