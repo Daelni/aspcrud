@@ -1,9 +1,7 @@
 
-
 var idPersona;
 
 var editt = false;
-
 
 //// Evento para el botón "Guardar cambios" / "Agregar persona"
 $('#btnGuardar').on('click', function () {
@@ -36,13 +34,6 @@ $('#btnGuardar').on('click', function () {
 	}
 });
 
-//$(document).ready(function () {
-//	$(document).on('click', '#btnGuardar', function () {
-//		guardarPersonas();
-//	});
-//});
-
-
 $(function () {
 
 	loadData();
@@ -71,13 +62,17 @@ var datosIncorrectos = "Datos incorrectos, vuelve a intentarlo.";
 
 // Función para guardar el ID de la persona en la variable global idPersona
 function guardarIdPersona(id) {
-	console.log("Guardando ID de persona: " + id);
 	idPersona = id;
 	console.log("idPersona actualizada: " + idPersona);
 }
+// Función para guardar el ID de la persona en la vaiable global para Reactivar
+function guardarIdReactivar(id) {
+	idPersona = id;
+	console.log("idPersona actualizada: " + idPersona);
+	reactivar(idPersona); // Llamar a la función reactivar con el ID guardado
+}
 
 function loadData() {
-
 	var filtro = $('#select_status').val();
 
 	$.ajax({
@@ -120,12 +115,8 @@ function loadData() {
 							'</button></td></tr>';
 					}
 					if (data[i].Estatus == 0) {
-						TablaPersonas += '<button class="btn btn-success" onclick="reactivar(' + data[i].id + ')" title="Reactivar" type="">' +
-							'<i class="fa fa-check" aria-hidden="true"></i>' +
-							'</button></td></tr>';
+						TablaPersonas += '<button class="btn btn-success" onclick="guardarIdReactivar(' + data[i].Id + ')" title="Reactivar" type="">Reactivar</button></td></tr>';
 					}
-
-
 				}
 
 				$('#tbody').html(TablaPersonas);
@@ -176,8 +167,6 @@ function detalles(id) {
 	});
 }
 
-
-
 function guardarPersonas() {
 	validarFormulario('.vfper', function (json) {
 		if (json.bool) {
@@ -196,8 +185,6 @@ function guardarPersonas() {
 	});
 			console.log("si llego: ");
 }
-
-
 
 function sendPersona(info) {
 
@@ -234,33 +221,6 @@ function sendPersona(info) {
 	})
 }
 
-//$(document).ready(function () {
-//	// Evento de clic del botón #btnOk
-//	$('#btnOk').click(function () {
-//		// Obtener los valores de los campos de entrada
-//		var id = idPersona;
-//		var nombre = $("#inputNombre").val();
-//		var apellidoP = $("#inputApellidoP").val();
-//		var apellidoM = $("#inputApellidoM").val();
-//		var direccion = $("#inputDireccion").val();
-//		var telefono = $("#inputTelefono").val();
-
-//		// Crear un objeto con los datos a enviar al servidor
-//		var persona = {
-//			Id: id,
-//			Nombre: nombre,
-//			ApellidoP: apellidoP,
-//			ApellidoM: apellidoM,
-//			Direccion: direccion,
-//			Telefono: telefono
-//		};
-
-//		console.log(persona)
-//		// Llamar a la función sendPersonaEdit para guardar los cambios
-//		sendPersonaEdit(persona);
-//	});
-//});
-
 function sendPersonaEdit(persona) {
 	$.ajax({
 		type: 'POST',
@@ -290,9 +250,7 @@ function sendPersonaEdit(persona) {
 	});
 }
 
-
 function eliminar(id) {
-	console.log('me estoy ejecutando')
 	console.log("Valor de id:", id); // Imprime el valor de id en la consola
 
 	$.ajax({
@@ -327,6 +285,7 @@ function eliminar(id) {
 }
 
 function reactivar(id) {
+	console.log("Valor de id:", id); // Imprime el valor de id en la consola
 
 	$.ajax({
 		type: 'POST',
