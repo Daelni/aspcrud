@@ -6,10 +6,10 @@ var editt = false;
 //// Evento para el botón "Guardar cambios" / "Agregar persona"
 $('#btnGuardar').on('click', function () {
 	if (editt === false) {
-		console.log("gualdar");
+		//console.log("gualdar");
 		guardarPersonas(); // Ejecutar la función de inserción
 	} else {
-		console.log("edit go");
+		//console.log("edit");
 		// Obtener los valores de los campos de entrada
 		var id = idPersona;
 		var nombre = $("#inputNombre").val();
@@ -97,7 +97,7 @@ function loadData() {
 			if (data != "") {
 
 				var TablaPersonas = "";
-				console.log(data)
+				//console.log(data)
 				for (var i = 0; i < data.length; i++) {
 					//Console.log(data[i]);
 					TablaPersonas += '<tr>';
